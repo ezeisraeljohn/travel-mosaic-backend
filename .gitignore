@@ -1,0 +1,11 @@
+node_modules
+build
+.env
+.env.prod
+.env.temp
+.env.example
+volumes
+*log
+logs
+./idea
+.env.prod

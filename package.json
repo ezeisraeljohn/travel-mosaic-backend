@@ -1,0 +1,35 @@
+{
+  "name": "travel-mosaic-backend",
+  "version": "1.0.0",
+  "description": "This is the travel mosaic package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Travel-Mosaic/travel-mosaic-backend"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.30.1",
+    "node-cron": "^3.0.3",
+    "passport": "^0.7.0",
+    "passport-http-bearer": "^1.0.1",
+    "pg": "^8.13.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.5",
+    "uuid": "^11.0.5",
+    "yup": "^1.6.1"
+  },
+  "keywords": [
+    "travel",
+    "tour",
+    "explore"
+  ],
+  "author": "Israe Eze",
+  "license": "ISC"
+}
