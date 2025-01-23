@@ -2,6 +2,8 @@ const { TokenExpiredError } = require("jsonwebtoken");
 const passport = require("passport");
 const BearerStrategy = require("passport-http-bearer");
 const LocalStrategy = require("passport-local");
+const User = require("../models");
+const jwt = require("jsonwebtoken");
 
 passport.use(
   new LocalStrategy(
