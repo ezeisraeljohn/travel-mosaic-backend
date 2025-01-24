@@ -4,13 +4,27 @@
   "description": "This is the travel mosaic package",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel app -d build",
+    "dev": "babel --watch app -d build > /dev/null 2>&1 & NODE_ENV=development NODE_PATH=./build nodemon build/server.js",
+    "prod": "NODE_ENV=production node app/server.js",
+    "stop:prod": "pm2 stop travel-mosaic",
+    "start:prod": "pm2 start build/server.js --name travel-mosaic -i max",
+    "stop:staging": "pm2 stop ngbuka-staging",
+    "generate:migration": "npx sequelize-cli migration:generate --name",
+    "db:drop": "NODE_ENV=${npm_config_env}  && npx sequelize db:drop --env=${npm_config_env}",
+    "db:create": "NODE_ENV=${npm_config_env}  && npx sequelize db:create --env=${npm_config_env}",
+    "db:migrate": "NODE_ENV=${npm_config_env}  && npx sequelize db:migrate --env=${npm_config_env}",
+    "db:migrate:undo": "NODE_ENV=${npm_config_env}  && npx sequelize db:migrate:undo --env=${npm_config_env}",
+    "db:seed": "NODE_ENV=${npm_config_env}  && npx sequelize db:seed:all --env=${npm_config_env}",
+    "db:seed:undo": "NODE_ENV=${npm_config_env}  && npx sequelize db:seed:undo --env=${npm_config_env}"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Travel-Mosaic/travel-mosaic-backend"
   },
   "dependencies": {
+    "babel": "^6.23.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -34,5 +48,14 @@
     "explore"
   ],
   "author": "Israe Eze",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.26.4",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "babel-cli": "^6.26.0",
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.9",
+    "sequelize-cli": "^6.6.2"
+  }
 }
