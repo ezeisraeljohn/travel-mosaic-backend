@@ -8,7 +8,6 @@ const { PORT, HOST } = process.env;
 const server = createServer(app);
 
 server.listen(PORT, () => {
-  //   console.log(`Server is running on http://${HOST}:${PORT}`);
   logger.info(`Server is running on http://${HOST}:${PORT}`);
 });
 
@@ -20,9 +19,8 @@ process.on("SIGINT", () => {
   });
 });
 
-//uncauth Error
+//uncaught Error
 process.on("uncaughtException", (error) => {
-  //   console.error("Uncaught Exception:", error);
   logger.error("Uncaught Exception:", error);
   process.exit(1);
 });
