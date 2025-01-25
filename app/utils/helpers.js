@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const { returnResult } = require("./responses");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const generateToken = async (data, isToken = true) => {
   try {
@@ -20,9 +23,9 @@ const generateToken = async (data, isToken = true) => {
       );
     });
 
-    return returnResult({ type: true, token });
+    return returnResult(true, token);
   } catch (error) {
-    return HandleJwtTokenErrors(error);
+    throw error;
   }
 };
 
@@ -31,7 +34,10 @@ const encryptPassword = (password) => {
   return bcrypt.hashSync(password, salt);
 };
 
+const verifyPassword = (password, hash) => bcrypt.compareSync(password, hash);
+
 module.exports = {
   generateToken,
   encryptPassword,
+  verifyPassword,
 };
