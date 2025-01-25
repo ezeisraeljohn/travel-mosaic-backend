@@ -3,6 +3,7 @@ const logger = require("../../../utils/logger");
 const UserError = require("../../../utils/Errors/userError");
 const { returnFromService } = require("../../../utils/responses");
 const { createUserQuery } = require("../Queries/authentication.query");
+const { generateToken } = require("../../../utils/helpers");
 
 const signupService = async (req, res, next) => {
   try {
@@ -24,6 +25,23 @@ const signupService = async (req, res, next) => {
   }
 };
 
+const loginService = async (req, res, next) => {
+  try {
+    const user = req.user.toJSON();
+    if (!user) {
+      throw new UserError("User not found", 404);
+    }
+    const token = await generateToken({ id: user.id, email: user.email });
+    return returnFromService(200)(true)("User")("User logged in sucessfuly")({
+      token: token.data,
+      user,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   signupService,
+  loginService,
 };
