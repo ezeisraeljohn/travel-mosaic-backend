@@ -9,6 +9,7 @@ const getUserByEmailQuery = async (email) => {
     logger.error("Error Finding User", {
       stack: error.stack,
     });
+    throw error;
   }
 };
 
