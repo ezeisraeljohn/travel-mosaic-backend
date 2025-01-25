@@ -44,11 +44,12 @@ const errorHandler = (err, req, res, next) => {
       details: err?.details || null,
     });
   }
-
+  logger.error(`InternalServerError: ${err}`, { stack: err.stack });
   res.status(500).json({
     success: false,
     error: "InternalServerError",
     message: "An unexpected error occurred",
+    details: err?.details || null,
   });
 };
 

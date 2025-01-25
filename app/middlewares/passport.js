@@ -3,7 +3,12 @@ const passport = require("passport");
 const BearerStrategy = require("passport-http-bearer");
 const LocalStrategy = require("passport-local");
 const User = require("../models");
+const { verifyPassword } = require("../utils/helpers");
 const jwt = require("jsonwebtoken");
+const {
+  getUserByEmailQuery,
+} = require("../resources/Users/Queries/users.query");
+const logger = require("../utils/logger");
 
 passport.use(
   new LocalStrategy(
@@ -13,16 +18,19 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const user = await User.findOne({ email });
+        const user = await getUserByEmailQuery(email);
         if (!user) {
           return done(null, false);
         }
-        const isValid = await user.isValidPassword(password);
+        const isValid = verifyPassword(password, user.password);
         if (!isValid) {
           return done(null, false);
         }
         return done(null, user);
       } catch (error) {
+        logger.error(`Error finding user ${error}`, {
+          stack: error.stack,
+        });
         return done(error);
       }
     }
@@ -46,3 +54,5 @@ passport.use(
     }
   })
 );
+
+module.exports = passport;
