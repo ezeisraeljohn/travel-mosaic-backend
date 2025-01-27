@@ -14,7 +14,7 @@ const { response } = require("../../../utils/responses");
 const signup = async (req, res, next) => {
   try {
     const result = await signupService(req, res, next);
-    return response(result)("Signup")(res);
+    return response(result)("User")(res);
   } catch (error) {
     next(error);
   }
@@ -30,7 +30,7 @@ const signup = async (req, res, next) => {
 const login = async (req, res, next) => {
   try {
     const result = await loginService(req, res, next);
-    return response(result)("Login")(res);
+    return response(result)("Authentication")(res);
   } catch (error) {
     next(error);
   }

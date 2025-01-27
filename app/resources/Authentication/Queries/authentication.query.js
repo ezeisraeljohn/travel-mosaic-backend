@@ -6,13 +6,21 @@ const bcrypt = require("bcryptjs");
 const { encryptPassword } = require("../../../utils/helpers");
 const { returnResult } = require("../../../utils/responses");
 const uuid = require("uuid");
-const createUserQuery = async (email, password) => {
+
+const createUserQuery = async (email, password = null) => {
   try {
-    const passwordHash = encryptPassword(password);
+    let data = null;
     const id = uuid.v4();
-    const data = await User.create({ id, email, password: passwordHash });
+    if (password) {
+      const passwordHash = encryptPassword(password);
+      data = await User.create({ id, email, password: passwordHash });
+    } else {
+      data = await User.create({ id, email });
+    }
     const returnData = data.toJSON();
-    delete returnData.password;
+    if (returnData.password) {
+      delete returnData.password;
+    }
     delete returnData.deletedAt;
     return returnData;
   } catch (error) {
