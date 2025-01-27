@@ -1,7 +1,9 @@
+const dotenv = require("dotenv");
 const { TokenExpiredError } = require("jsonwebtoken");
 const passport = require("passport");
 const BearerStrategy = require("passport-http-bearer");
 const LocalStrategy = require("passport-local");
+const GoogleStrategy = require("passport-google-oauth20");
 const User = require("../models");
 const { verifyPassword } = require("../utils/helpers");
 const jwt = require("jsonwebtoken");
@@ -9,7 +11,19 @@ const {
   getUserByEmailQuery,
 } = require("../resources/Users/Queries/users.query");
 const logger = require("../utils/logger");
+const {
+  createUserQuery,
+} = require("../resources/Authentication/Queries/authentication.query");
+const {
+  createFederatedCredentialQuery,
+  getFederatedCredentialQuery,
+} = require("../resources/FederatedCredentials/Queries/federatedCredentals.queries");
+dotenv.config();
 
+/**
+ * Passport configuration
+ * Local authentication strategy
+ */
 passport.use(
   new LocalStrategy(
     {
@@ -20,10 +34,12 @@ passport.use(
       try {
         const user = await getUserByEmailQuery(email);
         if (!user) {
+          logger.warn(`User with email ${email} not found.`);
           return done(null, false);
         }
         const isValid = verifyPassword(password, user.password);
         if (!isValid) {
+          logger.warn(`Incorrect password attempt for email ${email}`);
           return done(null, false);
         }
         return done(null, user);
@@ -37,6 +53,10 @@ passport.use(
   )
 );
 
+/**
+ * Bearer authentication strategy
+ * Used for authenticating users using JWT
+ */
 passport.use(
   new BearerStrategy(async (token, done) => {
     try {
@@ -55,4 +75,40 @@ passport.use(
   })
 );
 
+/**
+ * Google authentication strategy
+ */
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:3000/api/v1/login/google",
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      try {
+        let user = await getUserByEmailQuery(profile.email);
+        if (!user) {
+          user = await createUserQuery(profile.email);
+        }
+        let credentials = await getFederatedCredentialQuery({
+          provider: process.env.GOOGLE_CREDENTIAL_PROVIDER,
+          providerId: profile.id,
+        });
+        if (!credentials) {
+          credentials = await createFederatedCredentialQuery(
+            process.env.GOOGLE_CREDENTIAL_PROVIDER,
+            profile.id
+          );
+        }
+        return done(null, user);
+      } catch (error) {
+        logger.error(`Error finding user ${error}`, {
+          stack: error.stack,
+        });
+        return done(error);
+      }
+    }
+  )
+);
 module.exports = passport;

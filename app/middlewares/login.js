@@ -1,17 +1,35 @@
 const AuthenticactionError = require("../utils/Errors/authenticationError");
 const passport = require("passport");
+const logger = require("../utils/logger");
 
-const verifyUser = (req, res, next) => {
+const verifyUserLocal = (req, res, next) => {
   passport.authenticate("local", { session: false }, (err, user, info) => {
+    if (err) {
+      logger.error(`Error finding user ${err}`, {
+        stack: err.stack,
+      });
+      console.log(err);
+      return next(err);
+    }
+    if (!user) {
+      next(new AuthenticactionError("Invalid Credentials", 401));
+    }
+    req.user = user;
+    next(); // Pass control to the next middleware (login controller)
+  })(req, res, next);
+};
+
+const verifyUserGoogle = (req, res, next) => {
+  passport.authenticate("google", { session: false }, (err, user, info) => {
     if (err) {
       return next(err);
     }
     if (!user) {
-      next(new AuthenticactionError("Invalid email or password", 401));
+      next(new AuthenticactionError("Invalid Credentials", 401));
     }
     req.user = user;
-    next(); // Pass control to the next middleware (login controller)
-  });
+    next();
+  })(req, res, next);
 };
 
-module.exports = { verifyUser };
+module.exports = { verifyUserLocal, verifyUserGoogle };
