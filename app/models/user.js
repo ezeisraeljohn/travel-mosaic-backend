@@ -4,6 +4,10 @@ module.exports = (sequelize) => {
   class User extends Model {
     static associate(models) {
       // Define associations here if needed in the future
+      User.hasMany(models.FederatedCredential, {
+        foreignKey: "userId",
+        as: "federatedCredentials",
+      });
     }
   }
   User.init(
