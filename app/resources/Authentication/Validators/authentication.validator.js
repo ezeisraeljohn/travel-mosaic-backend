@@ -10,6 +10,9 @@ const signupSchema = yup.object().shape({
     .string()
     .min(8, "Must be at least 8 characters long")
     .required("Password is required"),
+  firstname: yup.string().notRequired(),
+  lastname: yup.string().notRequired(),
+  profilePicture: yup.string().notRequired(),
 });
 
 const loginSchema = yup.object().shape({
