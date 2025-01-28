@@ -87,16 +87,19 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        let user = await getUserByEmailQuery(profile.email);
+        const email = profile.emails[0].value;
+        let user = await getUserByEmailQuery(email);
         if (!user) {
-          user = await createUserQuery(profile.email);
+          user = await createUserQuery(email);
         }
         let credentials = await getFederatedCredentialQuery({
+          userId: user.id,
           provider: process.env.GOOGLE_CREDENTIAL_PROVIDER,
           providerId: profile.id,
         });
         if (!credentials) {
           credentials = await createFederatedCredentialQuery(
+            user.id,
             process.env.GOOGLE_CREDENTIAL_PROVIDER,
             profile.id
           );
