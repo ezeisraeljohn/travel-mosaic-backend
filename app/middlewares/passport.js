@@ -34,12 +34,11 @@ passport.use(
       try {
         const user = await getUserByEmailQuery(email);
         if (!user) {
-          logger.warn(`User with email ${email} not found.`);
+          logger.warn(`User not found.`);
           return done(null, false);
         }
         const isValid = verifyPassword(password, user.password);
         if (!isValid) {
-          logger.warn(`Incorrect password attempt for email ${email}`);
           return done(null, false);
         }
         return done(null, user);
