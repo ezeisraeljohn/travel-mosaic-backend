@@ -30,7 +30,7 @@ const loginService = async (req, res, next) => {
     const user = req.user.toJSON();
     const { password, deletedAt, ...userWithoutPassword } = user;
     if (!user) {
-      throw new UserError("User not found", 404);
+      throw new UserError("Invalid Credentials", 401);
     }
     const token = await generateToken({ id: user.id, email: user.email });
     return returnFromService(200)(true)("Authentication")(

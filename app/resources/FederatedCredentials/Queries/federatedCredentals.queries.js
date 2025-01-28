@@ -1,10 +1,18 @@
+const logger = require("../../../utils/logger");
 const { FederatedCredential } = require("../../../models");
 
-const createFederatedCredentialQuery = async (provider, providerId) => {
+const createFederatedCredentialQuery = async (userId, provider, providerId) => {
   try {
-    const data = await FederatedCredential.create({ provider, providerId });
+    const data = await FederatedCredential.create({
+      userId,
+      provider,
+      providerId,
+    });
     return data.toJSON();
   } catch (error) {
+    logger.error(`Error creating federated credentials ${error}`, {
+      stack: error.stack,
+    });
     throw new Error("Error creating federated credentials");
   }
 };
