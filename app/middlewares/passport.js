@@ -90,7 +90,14 @@ passport.use(
         const email = profile.emails[0].value;
         let user = await getUserByEmailQuery(email);
         if (!user) {
-          user = await createUserQuery(email);
+          const info = {
+            email,
+            password: null,
+            firstname: profile.name.givenName,
+            lastname: profile.name.familyName,
+            profilePicture: profile.photos[0].value,
+          };
+          user = await createUserQuery(info);
         }
         let credentials = await getFederatedCredentialQuery({
           userId: user.id,
