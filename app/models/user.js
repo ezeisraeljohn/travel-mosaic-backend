@@ -4,10 +4,13 @@ const uuid = require("uuid");
 module.exports = (sequelize) => {
   class User extends Model {
     static associate(models) {
-      // Define associations here if needed in the future
       User.hasMany(models.FederatedCredential, {
         foreignKey: "userId",
         as: "federatedCredentials",
+      });
+      User.hasMany(models.QuestionnaireResponse, {
+        foreignKey: "userId",
+        as: "questionnaireResponses",
       });
     }
   }
@@ -46,6 +49,12 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
         field: "profile_picture",
+      },
+      isEmailVerified: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+        field: "is_email_verified",
       },
     },
     {
