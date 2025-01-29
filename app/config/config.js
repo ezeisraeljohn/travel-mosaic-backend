@@ -20,6 +20,7 @@ module.exports = {
     port: DB_DEV_PORT,
     seederStorage: "json",
     seederStoragePath: "sequelizeSeedData.json",
+    seederStorageTableName: "sequelize_data",
     logging: false,
   },
   test: {
@@ -30,6 +31,7 @@ module.exports = {
     dialect: DB_DEV_TYPE,
     seederStorage: "json",
     seederStoragePath: "sequelizeSeedData.json",
+    seederStorageTableName: "sequelize_data",
     logging: false,
   },
   production: {
@@ -40,6 +42,7 @@ module.exports = {
     dialect: DB_DEV_TYPE,
     seederStorage: "json",
     seederStoragePath: "sequelizeSeedData.json",
+    seederStorageTableName: "sequelize_data",
     logging: false,
   },
   staging: {
@@ -50,6 +53,7 @@ module.exports = {
     dialect: DB_DEV_TYPE,
     seederStorage: "json",
     seederStoragePath: "sequelizeSeedData.json",
+    seederStorageTableName: "sequelize_data",
     logging: false,
   },
 };
