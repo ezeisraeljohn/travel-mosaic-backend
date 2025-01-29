@@ -27,16 +27,21 @@ const signupService = async (req, res, next) => {
 
 const loginService = async (req, res, next) => {
   try {
-    const user = req.user.toJSON();
-    const { password, deletedAt, ...userWithoutPassword } = user;
+    const user = req.user;
+    const { password, deletedAt, ...userWithoutPassword } = user.toJSON();
     if (!user) {
       throw new UserError("Invalid Credentials", 401);
     }
-    const token = await generateToken({ id: user.id, email: user.email });
+    const newToken = await generateToken({ id: user.id, email: user.email });
+    const refreshToken = await generateToken(
+      { id: user.id, email: user.email },
+      false
+    );
     return returnFromService(200)(true)("Authentication")(
       "User logged in sucessfuly"
     )({
-      token: token.data,
+      token: newToken.data,
+      refreshToken: refreshToken.data,
       user: userWithoutPassword,
     });
   } catch (error) {

@@ -8,14 +8,13 @@ const uuid = require("uuid");
 const createUserQuery = async (info) => {
   try {
     const { password, ...otherInfo } = info;
-    let data = null;
+    let returnData = null;
     if (password) {
       const passwordHash = encryptPassword(password);
-      data = await User.create({ ...otherInfo, password: passwordHash });
+      returnData = await User.create({ ...otherInfo, password: passwordHash });
     } else {
       data = await User.create({ ...otherInfo });
     }
-    const returnData = data.toJSON();
     if (returnData.password) {
       delete returnData.password;
     }
