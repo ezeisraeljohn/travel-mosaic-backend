@@ -4,6 +4,12 @@ const { returnResult } = require("./responses");
 const dotenv = require("dotenv");
 dotenv.config();
 
+/**
+ * @description - Generate a JWT token for authentication
+ * @param {Object} data
+ * @param {Boolean} isToken
+ * @returns The generated token
+ */
 const generateToken = async (data, isToken = true) => {
   try {
     const secret = isToken
@@ -29,6 +35,16 @@ const generateToken = async (data, isToken = true) => {
   }
 };
 
+const generateOtp = (num) => {
+  if (process.env.NODE_ENV === "development") {
+    return 100000;
+  } else {
+    return Math.floor(
+      Math.random() * (9 * Math.pow(10, num - 1)) + Math.pow(10, num - 1)
+    );
+  }
+};
+
 const encryptPassword = (password) => {
   const salt = bcrypt.genSaltSync(10);
   return bcrypt.hashSync(password, salt);
@@ -40,4 +56,5 @@ module.exports = {
   generateToken,
   encryptPassword,
   verifyPassword,
+  generateOtp,
 };
