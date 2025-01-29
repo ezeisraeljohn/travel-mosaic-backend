@@ -4,7 +4,7 @@ const passport = require("passport");
 const BearerStrategy = require("passport-http-bearer");
 const LocalStrategy = require("passport-local");
 const GoogleStrategy = require("passport-google-oauth20");
-const User = require("../models");
+const { User } = require("../models");
 const { verifyPassword } = require("../utils/helpers");
 const jwt = require("jsonwebtoken");
 const {
@@ -59,13 +59,16 @@ passport.use(
 passport.use(
   new BearerStrategy(async (token, done) => {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await User.findById(decoded.id);
+      const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+      const user = await User.findByPk(decoded.id);
       if (!user) {
         return done(null, false);
       }
       return done(null, user);
     } catch (error) {
+      logger.error(`Error finding user ${error}`, {
+        stack: error.stack,
+      });
       if (error instanceof TokenExpiredError) {
         return done(null, false, { message: "Token expired" });
       }
@@ -82,7 +85,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/api/v1/login/google",
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -95,6 +98,7 @@ passport.use(
             firstname: profile.name.givenName,
             lastname: profile.name.familyName,
             profilePicture: profile.photos[0].value,
+            isEmailVerified: profile.emails[0].verified,
           };
           user = await createUserQuery(info);
         }

@@ -8,7 +8,22 @@ const verifyUserLocal = (req, res, next) => {
       logger.error(`Error finding user ${err}`, {
         stack: err.stack,
       });
-      console.log(err);
+      return next(err);
+    }
+    if (!user) {
+      next(new AuthenticactionError("Invalid Credentials", 401));
+    }
+    req.user = user;
+    next(); // Pass control to the next middleware (login controller)
+  })(req, res, next);
+};
+
+const verifyUserBearer = (req, res, next) => {
+  passport.authenticate("bearer", { session: false }, (err, user, info) => {
+    if (err) {
+      logger.error(`Error finding user ${err}`, {
+        stack: err.stack,
+      });
       return next(err);
     }
     if (!user) {
@@ -32,4 +47,4 @@ const verifyUserGoogle = (req, res, next) => {
   })(req, res, next);
 };
 
-module.exports = { verifyUserLocal, verifyUserGoogle };
+module.exports = { verifyUserLocal, verifyUserGoogle, verifyUserBearer };
