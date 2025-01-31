@@ -1,5 +1,6 @@
 const {
   createQuestionnaire,
+  getQuestionnaires,
 } = require("../Controllers/questionnaire.controller");
 const {
   createQuestionnaireResponseSchema,
@@ -17,4 +18,5 @@ router.post(
   createQuestionnaire
 );
 
+router.get("/questionnaire", verifyUserBearer, getQuestionnaires);
 module.exports = router;

@@ -1,4 +1,7 @@
-const { createQuestionnaireQuery } = require("../Queries/questionnaire.query");
+const {
+  createQuestionnaireQuery,
+  getQuestionnairesQuery,
+} = require("../Queries/questionnaire.query");
 const QuestionnaireError = require("../../../utils/Errors/questionnaireError");
 const { returnFromService } = require("../../../utils/responses");
 const createQuestionnaireService = async (req, res, next) => {
@@ -18,4 +21,18 @@ const createQuestionnaireService = async (req, res, next) => {
   }
 };
 
-module.exports = { createQuestionnaireService };
+const getQuestionnairesService = async (req, res, next) => {
+  try {
+    if (!req.user) {
+      throw new QuestionnaireError("User not available", 401);
+    }
+    const questionnaires = await getQuestionnairesQuery(req.user.id);
+    return returnFromService(200)(true)("Questionnaires")(
+      "Questionnaires fetched successfully"
+    )(questionnaires);
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { createQuestionnaireService, getQuestionnairesService };

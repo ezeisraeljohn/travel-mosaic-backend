@@ -1,4 +1,8 @@
-const { QuestionnaireResponse } = require("../../../models");
+const {
+  QuestionnaireResponse,
+  QuestionnaireQuestion,
+  QuestionnaireOption,
+} = require("../../../models");
 
 const createQuestionnaireQuery = async (data) => {
   try {
@@ -9,4 +13,20 @@ const createQuestionnaireQuery = async (data) => {
   }
 };
 
-module.exports = { createQuestionnaireQuery };
+const getQuestionnairesQuery = async (userId) => {
+  try {
+    const questionnaires = await QuestionnaireQuestion.findAll({
+      include: [
+        {
+          model: QuestionnaireOption,
+          as: "options",
+        },
+      ],
+    });
+    return questionnaires;
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { createQuestionnaireQuery, getQuestionnairesQuery };

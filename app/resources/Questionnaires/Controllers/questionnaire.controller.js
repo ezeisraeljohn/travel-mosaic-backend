@@ -1,5 +1,6 @@
 const {
   createQuestionnaireService,
+  getQuestionnairesService,
 } = require("../Services/questionnaire.service");
 const { response } = require("../../../utils/responses");
 
@@ -12,4 +13,13 @@ const createQuestionnaire = async (req, res, next) => {
   }
 };
 
-module.exports = { createQuestionnaire };
+const getQuestionnaires = async (req, res, next) => {
+  try {
+    const questionnaires = await getQuestionnairesService(req, res, next);
+    return response(questionnaires)("Questionnaires")(res);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { createQuestionnaire, getQuestionnaires };
