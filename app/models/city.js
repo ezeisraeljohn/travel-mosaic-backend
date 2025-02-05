@@ -5,9 +5,9 @@ module.exports = (sequelize) => {
   class City extends Model {
     static associate(models) {
       City.belongsTo(models.Country, {
-        foreignKey: "countryId",
+        foreignKey: "country",
         onDelete: "CASCADE",
-        as: "country",
+        as: "cityCountry",
       });
       City.hasMany(models.Hotspot, {
         foreignKey: "cityId",
