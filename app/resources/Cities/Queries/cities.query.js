@@ -9,7 +9,7 @@ const getCitiesQuery = async (req) => {
         [Op.or]: [
           { name: { [Op.iLike]: `%${req.query.name}%` } },
           {
-            "$country.name$": { [Op.iLike]: `%${req.query.name}%` },
+            "$cityCountry.name$": { [Op.iLike]: `%${req.query.name}%` },
           },
           {
             state: { [Op.iLike]: `%${req.query.name}%` },
@@ -18,7 +18,7 @@ const getCitiesQuery = async (req) => {
       },
       include: {
         model: Country,
-        as: "country",
+        as: "cityCountry",
         required: true,
       },
       limit: 100,
