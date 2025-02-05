@@ -27,9 +27,17 @@ module.exports = {
         onUpdate: "CASCADE",
         field: "user_id",
       },
-      destination: {
+      description: {
         type: Sequelize.STRING,
+        allowNull: true,
+      },
+      destination: {
+        type: Sequelize.UUID,
         allowNull: false,
+        references: {
+          model: "cities",
+          key: "id",
+        },
       },
       startDate: {
         type: Sequelize.DATE,
