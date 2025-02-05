@@ -29,10 +29,9 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      countryId: {
+      country: {
         type: DataTypes.UUID,
         allowNull: false,
-        field: "country_id",
       },
       state: {
         type: DataTypes.STRING,
