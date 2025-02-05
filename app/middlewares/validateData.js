@@ -18,4 +18,21 @@ const validate = (schema) => async (req, res, next) => {
   }
 };
 
-module.exports = { validate };
+const validateQuery = (schema) => async (req, res, next) => {
+  try {
+    req.query = await schema.validate(req.query, {
+      abortEarly: false,
+      stripUnknown: true,
+    });
+    next();
+  } catch (error) {
+    logger.error(`Error Validating data`);
+    const errors = error.inner.map((err) => ({
+      field: err.path,
+      message: err.message,
+    }));
+    next(new ValidationError(errors));
+  }
+};
+
+module.exports = { validate, validateQuery };
