@@ -13,6 +13,18 @@ const getUserByEmailQuery = async (email) => {
   }
 };
 
+const getUserByIdQuery = async (id) => {
+  try {
+    return User.findByPk(id);
+  } catch (error) {
+    logger.error("Error Finding User", {
+      stack: error.stack,
+    });
+    throw error;
+  }
+};
+
 module.exports = {
   getUserByEmailQuery,
+  getUserByIdQuery,
 };
