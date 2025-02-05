@@ -3,7 +3,6 @@ build
 .env
 .env.prod
 .env.temp
-.env.example
 volumes
 *log
 logs
