@@ -15,8 +15,8 @@
     "seed:generate": "npx sequelize-cli seed:generate --name",
     "db:drop": "NODE_ENV=${npm_config_env}  && npx sequelize db:drop --env=${npm_config_env}",
     "db:create": "NODE_ENV=${npm_config_env}  && npx sequelize db:create --env=${npm_config_env}",
-    "db:migrate": "NODE_ENV=${npm_config_env}  && npx sequelize db:migrate --env=${npm_config_env}",
-    "db:migrate:undo": "NODE_ENV=${npm_config_env}  && npx sequelize db:migrate:undo --env=${npm_config_env}",
+    "db:migrate": "NODE_ENV=${npm_config_env}  && npx sequelize db:migrate --env=${npm_config_env} --name",
+    "db:migrate:undo": "NODE_ENV=${npm_config_env}  && npx sequelize db:migrate:undo --env=${npm_config_env} --name",
     "db:seed": "NODE_ENV=${npm_config_env}  && npx sequelize db:seed:all --env=${npm_config_env}",
     "db:seed:undo": "NODE_ENV=${npm_config_env}  && npx sequelize db:seed:undo  --env=${npm_config_env} --seed",
     "db:seed:undo:all": "npx sequelize-cli db:seed:undo:all"
@@ -26,6 +26,8 @@
     "url": "https://github.com/Travel-Mosaic/travel-mosaic-backend"
   },
   "dependencies": {
+    "@api/fsq-developers": "file:.api/apis/fsq-developers",
+    "axios": "^1.7.9",
     "babel": "^6.23.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
@@ -34,6 +36,7 @@
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "microsoft-cognitiveservices-speech-sdk": "^1.42.0",
     "moment": "^2.30.1",
     "node-cron": "^3.0.3",
     "passport": "^0.7.0",
