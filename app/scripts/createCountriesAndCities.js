@@ -77,7 +77,7 @@ const createOrUpdateCountriesAndCities = async () => {
 
     logger.info("Countries and cities synchronization complete.");
   } catch (error) {
-    logger.error({ message: error.message, stack: error.stack });
+    console.log(error);
   }
 };
 
