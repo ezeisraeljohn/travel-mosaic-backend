@@ -32,7 +32,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      stateCode: {
+      state_code: {
         type: Sequelize.STRING,
         allowNull: true,
       },
