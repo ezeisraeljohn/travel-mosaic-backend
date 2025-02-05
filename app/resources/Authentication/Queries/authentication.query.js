@@ -22,7 +22,6 @@ const createUserQuery = async (info) => {
     return returnData;
   } catch (error) {
     logger.error(error);
-    console.error(error);
     throw new UserError("Error creating user", 500);
   }
 };

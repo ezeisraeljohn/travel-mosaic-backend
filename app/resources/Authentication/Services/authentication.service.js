@@ -8,17 +8,18 @@ const { generateToken } = require("../../../utils/helpers");
 const signupService = async (req, res, next) => {
   try {
     const { email, password } = req.body;
+    console.log(email);
     const user = await getUserByEmailQuery(email);
     if (user) {
       throw new UserError("User already exists", 400);
     }
-    const newUser = await createUserQuery(email, password);
+    const newUser = await createUserQuery({ email, password });
     if (!newUser) {
       throw new UserError("Error creating user", 500);
     }
     if (newUser)
       return returnFromService(201)(true)("User")("User created successfully")(
-        newUser
+        newUser.toJSON()
       );
   } catch (error) {
     throw error;
