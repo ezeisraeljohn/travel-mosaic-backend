@@ -7,7 +7,7 @@ module.exports = (sequelize) => {
       Country.hasMany(models.City, {
         foreignKey: "country",
         onDelete: "CASCADE",
-        as: "cities",
+        as: "cityCountry",
       });
     }
   }
