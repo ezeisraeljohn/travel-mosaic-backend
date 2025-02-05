@@ -65,7 +65,7 @@ const createOrUpdateCountriesAndCities = async () => {
       for (const city of citiesData) {
         await City.upsert({
           name: city.name,
-          countryId: countryInstance.id,
+          country: countryInstance.id,
           state: city.adminName1,
           stateCode: city.adminCode1,
           latitude: parseFloat(city.lat),
