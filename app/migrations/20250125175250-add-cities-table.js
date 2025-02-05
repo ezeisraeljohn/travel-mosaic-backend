@@ -36,7 +36,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      latitiude: {
+      longitude: {
         type: Sequelize.DECIMAL(10, 8),
       },
       latitude: {
