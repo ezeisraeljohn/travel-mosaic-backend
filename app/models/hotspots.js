@@ -30,7 +30,7 @@ module.exports = (sequelize) => {
         field: "osm_url",
       },
       name: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       category: {
@@ -44,7 +44,7 @@ module.exports = (sequelize) => {
         type: DataTypes.DECIMAL(11, 8),
       },
       address: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
       },
       rating: {
         type: DataTypes.DECIMAL(2, 1),
@@ -59,13 +59,13 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
       },
       image: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
       },
       tags: {
-        type: DataTypes.JSONB,
+        type: DataTypes.TEXT,
       },
     },
     {
