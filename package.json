@@ -4,6 +4,7 @@
   "description": "This is the travel mosaic package",
   "main": "index.js",
   "scripts": {
+    "setup:db": "npm run db:create && npm run db:migrate && npm run db:seed && node app/scripts/createCountriesAndCities.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "babel app -d build",
     "dev": "babel --watch app -d build > /dev/null 2>&1 & NODE_ENV=development NODE_PATH=./build nodemon build/server.js",
@@ -46,6 +47,7 @@
     "passport-local": "^1.0.0",
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
+    "pm2": "^5.4.3",
     "sequelize": "^6.37.5",
     "uuid": "^11.0.5",
     "winston": "^3.17.0",
