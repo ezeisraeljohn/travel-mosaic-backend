@@ -1,4 +1,6 @@
-"use strict";
+("use strict");
+
+const { DataTypes } = require("sequelize");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -9,40 +11,37 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable("itinerary_activities", {
+    await queryInterface.createTable("itineraries", {
       id: {
         type: Sequelize.UUID,
         unique: true,
         allowNull: false,
         primaryKey: true,
       },
-      itineraryId: {
+      tripId: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: "itineraries",
+          model: "trips",
           key: "id",
         },
+        field: "trip_id",
       },
       name: {
-        type: Sequelize.UUID,
+        type: Sequelize.STRING,
         allowNull: false,
       },
-      description: {
-        type: Sequelize.UUID,
+      hotspots: {
+        type: Sequelize.ARRAY(DataTypes.UUID),
         allowNull: true,
       },
-      startTime: {
-        type: Sequelize.TIME,
-        allowNull: false,
+      date: {
+        type: Sequelize.DATE,
+        allowNull: true,
       },
-      endTime: {
-        type: Sequelize.TIME,
-        allowNull: false,
-      },
-      cost: {
-        type: Sequelize.FLOAT,
-        allowNull: false,
+      description: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -66,6 +65,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable("itinerary_activities");
+    await queryInterface.dropTable("itineraries");
   },
 };
