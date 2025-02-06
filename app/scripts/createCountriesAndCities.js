@@ -5,14 +5,37 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const ONE_MONTH = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+const MAX_RETRIES = 3; // Number of retries before failing
+const TIMEOUT = 10000; // Timeout in milliseconds (10 seconds)
 
-const fetchWithRateLimit = async (url) => {
-  try {
-    const response = await fetch(url);
-    return response.json();
-  } catch (error) {
-    logger.error("Error fetching data:", error.message);
-    throw error;
+// Function to fetch data with retries and timeout
+const fetchWithRateLimit = async (url, retries = MAX_RETRIES) => {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), TIMEOUT);
+
+      const response = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeout);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      if (attempt === retries) {
+        logger.error(`API request failed after ${retries} attempts:`, error);
+        throw error;
+      }
+
+      logger.warn(
+        `Fetch failed (attempt ${attempt}/${retries}). Retrying in ${
+          2 ** attempt
+        }s...`
+      );
+      await new Promise((resolve) => setTimeout(resolve, 2 ** attempt * 1000)); // Exponential backoff
+    }
   }
 };
 
@@ -44,11 +67,8 @@ const createOrUpdateCountriesAndCities = async () => {
         });
         logger.info(`Inserted country: ${country.countryName}`);
         newOrUpdatedCountries.push(countryInstance);
-      } else if (
-        countryInstance.name !== country.countryName ||
-        countryInstance.updatedAt < oneMonthAgo
-      ) {
-        // Update only if name changed or older than a month
+      } else if (countryInstance.updatedAt < oneMonthAgo) {
+        // Update only if older than a month
         await countryInstance.update({ name: country.countryName });
         logger.info(`Updated country: ${country.countryName}`);
         newOrUpdatedCountries.push(countryInstance);
@@ -62,22 +82,42 @@ const createOrUpdateCountriesAndCities = async () => {
       const cityResponse = await fetchWithRateLimit(cityUrl);
       const citiesData = cityResponse.geonames || [];
 
+      // Fetch existing cities for the country
+      const existingCities = await City.findAll({
+        where: { country: countryInstance.id },
+      });
+      const cityMap = new Map(existingCities.map((c) => [c.name, c]));
+
       for (const city of citiesData) {
-        await City.upsert({
-          name: city.name,
-          country: countryInstance.id,
-          state: city.adminName1,
-          stateCode: city.adminCode1,
-          latitude: parseFloat(city.lat),
-          longitude: parseFloat(city.lng),
-        });
-        logger.info(`Upserted city: ${city.name}`);
+        let cityInstance = cityMap.get(city.name);
+
+        if (!cityInstance) {
+          // Insert new city
+          await City.create({
+            name: city.name,
+            country: countryInstance.id,
+            state: city.adminName1,
+            stateCode: city.adminCode1,
+            latitude: parseFloat(city.lat),
+            longitude: parseFloat(city.lng),
+          });
+          logger.info(`Inserted new city: ${city.name}`);
+        } else if (cityInstance.updatedAt < oneMonthAgo) {
+          // Update only if older than a month
+          await cityInstance.update({
+            state: city.adminName1,
+            stateCode: city.adminCode1,
+            latitude: parseFloat(city.lat),
+            longitude: parseFloat(city.lng),
+          });
+          logger.info(`Updated city: ${city.name}`);
+        }
       }
     }
 
     logger.info("Countries and cities synchronization complete.");
   } catch (error) {
-    console.log(error);
+    logger.error("Error during sync:", error);
   }
 };
 
