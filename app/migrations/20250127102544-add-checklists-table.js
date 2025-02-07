@@ -1,6 +1,4 @@
-("use strict");
-
-const { DataTypes } = require("sequelize");
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -11,49 +9,30 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable("itineraries", {
+    await queryInterface.createTable("checklist_items", {
       id: {
         type: Sequelize.UUID,
-        unique: true,
-        allowNull: false,
         primaryKey: true,
       },
-      tripId: {
+      trip_id: {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: "trips",
           key: "id",
         },
-        field: "trip_id",
       },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      hotspots: {
-        type: Sequelize.ARRAY(DataTypes.UUID),
-        allowNull: true,
+      is_completed: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
-      date: {
+      created_at: {
         type: Sequelize.DATE,
-        allowNull: true,
-      },
-      description: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      createdAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.NOW,
-        field: "created_at",
-      },
-      updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: false,
-        defaultValue: Sequelize.NOW,
-        field: "updated_at",
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       },
     });
   },
@@ -65,6 +44,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable("itineraries");
+    await queryInterface.dropTable("checklist_items");
   },
 };
