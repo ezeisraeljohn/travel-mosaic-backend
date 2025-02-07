@@ -3,8 +3,8 @@ const app = require("./application");
 const dotenv = require("dotenv");
 const logger = require("../app/utils/logger");
 dotenv.config();
-const { PORT, HOST } = process.env;
-
+const { HOST } = process.env;
+const PORT = process.env.PORT || 8080;
 const server = createServer(app);
 
 server.listen(PORT, () => {
