@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy Node.js app to Azure Web App - travel-mosaic
 
 on:
@@ -13,7 +10,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -23,10 +20,15 @@ jobs:
         with:
           node-version: "20.x"
 
-      - name: npm install, install PM2 build, and test
+      - name: Install dependencies
+        run: npm install
+
+      - name: Ensure PM2 is installed
         run: |
-          npm install
-          npm install pm2 -g
+          npm install pm2 --save
+
+      - name: Build and test
+        run: |
           npm run build --if-present
           npm run test --if-present
 
@@ -46,8 +48,8 @@ jobs:
       name: "Production"
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
       - name: Download artifact from build job
@@ -58,14 +60,17 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
 
+      - name: Install dependencies after deployment
+        run: npm install --omit=dev
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_65DDAFC750C248B099AD364433F79372 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_27394E8F68CA4465A023F49FDFD6B8B2 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1B7DA99E8ABE41C19BD692546926F06C }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
 
-      - name: "Deploy to Azure Web App"
+      - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
@@ -73,6 +78,8 @@ jobs:
           slot-name: "Production"
           package: .
 
-      - name: "Run start command"
-        run: |
-          npm run start
+      - name: Verify PM2 installation
+        run: npx pm2 -v || npm install pm2
+
+      - name: Run start command
+        run: npm run start
