@@ -3,11 +3,11 @@ const app = require("./application");
 const dotenv = require("dotenv");
 const logger = require("../app/utils/logger");
 dotenv.config();
-const { HOST } = process.env;
 const PORT = process.env.PORT || 8080;
+const HOST = process.NODE_ENV === "production" ? "0.0.0.0" : "localhost";
 const server = createServer(app);
 
-server.listen(PORT, () => {
+server.listen(PORT, HOST, () => {
   logger.info(`Server is running on http://${HOST}:${PORT}`);
 });
 
