@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: "my-node-app1",
+      name: "travel-mosaic",
       script: "./build/server.js",
       instances: 1,
       exec_mode: "fork", // Corrected value
@@ -14,7 +14,7 @@ module.exports = {
       },
       env_production: {
         NODE_ENV: "production",
-        PORT: 80,
+        PORT: 8080,
       },
     },
   ],
