@@ -72,3 +72,7 @@ jobs:
           app-name: "travel-mosaic"
           slot-name: "Production"
           package: .
+      - name: "Add pm2 both in node modules and globally"
+        run: |
+          "npm install pm2 -g"
+          "npm install pm2"
