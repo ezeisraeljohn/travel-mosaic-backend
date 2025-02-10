@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "travel-mosaic",
-      script: "./build/server.js",
+      script: "./app/server.js",
       instances: 1,
       exec_mode: "fork", // Corrected value
       autorestart: true,
