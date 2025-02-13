@@ -45,7 +45,7 @@ module.exports = {
     password: DB_PROD_PASSWORD,
     database: DB_PROD_DATABASE,
     host: DB_PROD_HOST,
-    dialect: DB_PROD_TYPE,
+    dialect: "postgres",
     seederStorage: "json",
     seederStoragePath: "sequelizeSeedData.json",
     seederStorageTableName: "sequelize_data",
