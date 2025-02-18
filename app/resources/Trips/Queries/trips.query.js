@@ -2,7 +2,6 @@ const { Trip } = require("../../../models");
 
 const createTripsQuery = async (trip) => {
   try {
-    console.log(trip);
     const newTrip = await Trip.create(trip);
     return newTrip;
   } catch (error) {
@@ -11,13 +10,21 @@ const createTripsQuery = async (trip) => {
   }
 };
 
-const getTripsQuery = async (userId) => {
+const getTripsQuery = async (query) => {
   try {
-    const trips = await Trip.findAll({ where: { userId } });
+    const trips = await Trip.findAll({ where: { ...query } });
     return { trips };
   } catch (error) {
     throw error;
   }
 };
 
-module.exports = { createTripsQuery, getTripsQuery };
+const getTripByIdQuery = async (tripId) => {
+  try {
+    return await Trip.findByPk(tripId);
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { createTripsQuery, getTripsQuery, getTripByIdQuery };

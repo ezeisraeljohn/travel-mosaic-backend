@@ -69,9 +69,6 @@ passport.use(
       logger.error(`Error finding user ${error}`, {
         stack: error.stack,
       });
-      if (error instanceof TokenExpiredError) {
-        return done(null, false, { message: "Token expired" });
-      }
       return done(error);
     }
   })

@@ -15,7 +15,8 @@ const createTripsService = async (req, res, next) => {
 
 const getTripsService = async (req, res, next) => {
   try {
-    const trips = await getTripsQuery(req.user.id);
+    const query = { userId: req.user.id };
+    const trips = await getTripsQuery(query);
     return returnFromService(200)(true)("Trip")("Trips fetched successfully")(
       trips.trips
     );

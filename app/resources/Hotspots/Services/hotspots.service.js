@@ -146,7 +146,6 @@ const getHotspotsService = async (req, res, next) => {
       .filter((hotspot) => {
         return hotspot.image !== null && hotspot.name !== "Unknown";
       });
-    //     console.log("Final data after bulk insert:", plainHotspots);
     return returnFromService(200)(true)("Hotspot")(
       "Hotspots fetched successfully"
     )(plainHotspots);

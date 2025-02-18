@@ -20,10 +20,7 @@ const errorHandler = (err, req, res, next) => {
 
   if (err instanceof jwt.JsonWebTokenError) {
     logger.error(
-      `JWT >>> JsonWebTokenError: Permission denied, Unauthorized access`,
-      {
-        stack: err.stack,
-      }
+      `JWT >>> JsonWebTokenError: Permission denied, Unauthorized access ${err}`
     );
     return res.status(err.status).json({
       success: false,

@@ -9,7 +9,7 @@ const validate = (schema) => async (req, res, next) => {
     });
     next();
   } catch (error) {
-    logger.error(`Error Validating data`);
+    logger.error(`Error Validating data ${error}`);
     const errors = error.inner.map((err) => ({
       field: err.path,
       message: err.message,
