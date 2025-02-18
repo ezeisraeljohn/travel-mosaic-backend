@@ -14,13 +14,14 @@ const createBudgetService = async (req, res, next) => {
     if (!trip) {
       throw new TripError("Trip not found", 404);
     }
-    const existingBudgetForTrip = await getBudgetByTripIdQuery(
-      budgetData.tripId
-    );
+    if (req.user.id !== trip.userId) {
+      throw new TripError("Unauthorized", 401);
+    }
+    const existingBudgetForTrip = await getBudgetByTripIdQuery(trip.id);
     if (existingBudgetForTrip) {
       throw new BudgetError("Budget already exists for this trip", 400);
     }
-    const budget = await createBudgetQuery(budgetData);
+    const budget = await createBudgetQuery(req.body);
     return returnFromService(201)(true)("Budget")(
       "Budget created successfully"
     )(budget);
