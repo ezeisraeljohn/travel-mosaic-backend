@@ -5,8 +5,10 @@ module.exports = {
       script: "./app/server.js",
       instances: 1,
       exec_mode: "fork", // Corrected value
-      autorestart: true,
       watch: true,
+      ignore_watch: ["logs"],
+      max_restarts: 5,
+      autorestart: true,
       max_memory_restart: "1G",
       env: {
         NODE_ENV: "development",
