@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const logger = require("../app/utils/logger");
 dotenv.config();
 
-const { HOST } = process.env.HOST;
+const { HOST } = process.env;
 const PORT = process.env.PORT || 8080;
 const server = createServer(app);
 
