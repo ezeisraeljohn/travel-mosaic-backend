@@ -46,6 +46,12 @@ module.exports = {
     database: DB_PROD_DATABASE,
     host: DB_PROD_HOST,
     dialect: "postgres",
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
     seederStorage: "json",
     seederStoragePath: "sequelizeSeedData.json",
     seederStorageTableName: "sequelize_data",
