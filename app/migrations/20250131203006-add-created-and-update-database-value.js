@@ -9,7 +9,7 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.changeColumn("hotspot_categories", "value", {
+    await queryInterface.addColumn("hotspot_categories", "value", {
       type: Sequelize.STRING(1000),
     });
   },
@@ -21,7 +21,7 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.changeColumn("hotspot_categories", "value", {
+    await queryInterface.removeColumn("hotspot_categories", "value", {
       type: Sequelize.STRING,
     });
   },

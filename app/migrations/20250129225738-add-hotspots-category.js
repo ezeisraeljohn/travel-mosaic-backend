@@ -10,11 +10,6 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
       },
-      fsq_id: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
