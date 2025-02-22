@@ -14,13 +14,7 @@ const passport = require("passport");
 const router = express.Router();
 //Local login
 router.post("/signup", validate(signupSchema), signup);
-router.post(
-  "/login",
-  validate(loginSchema),
-  //   passport.authenticate("local", { session: false }),
-  verifyUserLocal,
-  login
-);
+router.post("/login", validate(loginSchema), verifyUserLocal, login);
 
 //Google OAuth2 login
 router.get(
