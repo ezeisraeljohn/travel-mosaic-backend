@@ -82,3 +82,4 @@ jobs:
           app-name: "travel-mosaic"
           slot-name: "Production"
           package: .
+          clean: true
