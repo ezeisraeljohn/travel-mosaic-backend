@@ -1,7 +1,17 @@
 const winston = require("winston");
 const util = require("util");
+const fs = require("fs");
+const path = require("path");
 const dotenv = require("dotenv");
 dotenv.config();
+
+// Define the logs directory path
+const logDir = path.join(__dirname, "../../logs");
+
+// Ensure the logs directory exists
+if (!fs.existsSync(logDir)) {
+  fs.mkdirSync(logDir, { recursive: true });
+}
 
 // Create a new winston logger instance
 const logger = winston.createLogger({
@@ -9,7 +19,6 @@ const logger = winston.createLogger({
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.printf(({ timestamp, level, message, ...meta }) => {
-      // Safely format metadata, ensuring it's not null or undefined
       const metaString =
         meta && Object.keys(meta).length
           ? util.inspect(meta, { depth: null })
@@ -18,18 +27,18 @@ const logger = winston.createLogger({
     })
   ),
   defaultMeta: {
-    service: `${process.env.APP_NAME}`,
+    service: process.env.APP_NAME || "travel-mosaic",
   },
   transports: [
     new winston.transports.Console({
       format: winston.format.simple(),
     }),
     new winston.transports.File({
-      filename: "logs/error.log",
+      filename: path.join(logDir, "error.log"),
       level: "error",
     }),
     new winston.transports.File({
-      filename: "logs/combined.log",
+      filename: path.join(logDir, "combined.log"),
       level: "info",
     }),
   ],
