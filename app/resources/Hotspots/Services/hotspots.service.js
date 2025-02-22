@@ -28,7 +28,6 @@ const getHotspotsService = async (req, res, next) => {
       longAndLat.longitude,
       category.value
     );
-    console.log(OsmQuery);
     const osmResponse = await axios.get(process.env.OSM_API_URL, {
       params: {
         data: OsmQuery,
@@ -61,7 +60,6 @@ const getHotspotsService = async (req, res, next) => {
             // Get description
             if (entities[tags.wikidata]?.descriptions?.en) {
               description = entities[tags.wikidata].descriptions.en.value;
-              console.log(description);
             }
 
             // Get image
