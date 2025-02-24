@@ -8,10 +8,10 @@ dotenv.config();
 // Define the logs directory path
 const logDir = path.join(__dirname, "../../logs");
 
-// Ensure the logs directory exists
-if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir, { recursive: true });
-}
+// // Ensure the logs directory exists
+// if (!fs.existsSync(logDir)) {
+//   fs.mkdirSync(logDir, { recursive: true });
+// }
 
 // Create a new winston logger instance
 const logger = winston.createLogger({
