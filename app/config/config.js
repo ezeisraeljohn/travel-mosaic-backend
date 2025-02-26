@@ -41,10 +41,11 @@ module.exports = {
     logging: false,
   },
   production: {
-    username: DB_PROD_USERNAME,
-    password: DB_PROD_PASSWORD,
-    database: DB_PROD_DATABASE,
-    host: DB_PROD_HOST,
+    //     username: DB_PROD_USERNAME,
+    //     password: DB_PROD_PASSWORD,
+    //     database: DB_PROD_DATABASE,
+    //     host: DB_PROD_HOST,
+    use_env_variable: "DATABASE_URL",
     dialect: "postgres",
     dialectOptions: {
       ssl: {
