@@ -3,7 +3,8 @@ module.exports = {
     {
       name: "travel-mosaic",
       script: "./app/server.js",
-      pre_start: "mkdir -p /home/site/wwwroot/logs",
+      pre_start:
+        "mkdir -p /home/site/wwwroot/logs && touch /home/site/wwwroot/logs/combined.log && touch /home/site/wwwroot/logs/error.log",
       instances: 1,
       exec_mode: "fork", // Corrected value
       watch: true,
