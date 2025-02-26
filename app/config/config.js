@@ -1,7 +1,10 @@
 const dotenv = require("dotenv");
 const path = require("path");
 
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config({ path: path.resolve(__dirname, "../../.env") });
+}
+
 const {
   DB_DEV_HOST,
   DB_DEV_USERNAME,
