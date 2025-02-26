@@ -6,7 +6,11 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 // Define the logs directory path
-const logDir = path.join(__dirname, "../../logs");
+
+const logDir =
+  process.NODE_ENV === "production"
+    ? path.join(process.LOG_DIR || "/home/LogFiles")
+    : path.join(__dirname, "../../logs");
 
 // Ensure the logs directory exists
 if (!fs.existsSync(logDir)) {
