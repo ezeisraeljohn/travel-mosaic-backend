@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "setup:db": "npm run db:create && npm run db:migrate && npm run db:seed && node app/scripts/createCountriesAndCities.js",
-    "start": "pm2 start ecosystem.config.js --no-daemon",
+    "start": "pm2 start ecosystem.config.js --env production --no-daemon",
     "build": "babel app -d build",
-    "dev": "babel --watch app -d build > /dev/null 2>&1 & NODE_ENV=development NODE_PATH=./build nodemon build/server.js",
+    "dev": "NODE_ENV=development babel --watch app -d build > /dev/null 2>&1 & NODE_PATH=./build nodemon build/server.js",
     "prod": "NODE_ENV=production node app/server.js",
     "stop:prod": "npx pm2 stop travel-mosaic",
     "start:prod": "npx pm2 start build/server.js --name travel-mosaic -i max",
