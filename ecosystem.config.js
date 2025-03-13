@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "travel-mosaic",
-      script: "./app/server.js",
+      script: "./build/server.js",
       pre_start:
         "mkdir -p /home/site/wwwroot/logs && touch /home/site/wwwroot/logs/combined.log && touch /home/site/wwwroot/logs/error.log",
       instances: 1,
