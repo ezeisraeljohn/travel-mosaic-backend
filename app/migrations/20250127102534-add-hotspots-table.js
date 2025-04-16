@@ -66,7 +66,7 @@ module.exports = {
         allowNull: false,
         defaultValue: Sequelize.NOW,
       },
-      udated_at: {
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.NOW,
