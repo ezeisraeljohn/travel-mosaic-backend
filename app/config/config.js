@@ -24,7 +24,6 @@ module.exports = {
     username: DB_DEV_USERNAME,
     password: DB_DEV_PASSWORD,
     database: DB_DEV_DATABASE,
-    host: DB_DEV_HOST,
     dialect: "postgres",
     port: DB_DEV_PORT,
     seederStorage: "json",
