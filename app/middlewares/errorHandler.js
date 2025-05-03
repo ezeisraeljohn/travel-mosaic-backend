@@ -1,8 +1,7 @@
 const logger = require("../utils/logger");
 const BaseError = require("../utils/Errors/baseError");
 const jwt = require("jsonwebtoken");
-const { stack } = require("sequelize/lib/utils");
-const { or } = require("sequelize");
+
 const errorHandler = (err, req, res, next) => {
   if (err instanceof BaseError) {
     logger.error(`BaseError: ${err}`, {
@@ -22,7 +21,7 @@ const errorHandler = (err, req, res, next) => {
     logger.error(
       `JWT >>> JsonWebTokenError: Permission denied, Unauthorized access ${err}`
     );
-    return res.status(err.status).json({
+    return res.status(403).json({
       success: false,
       error: "Authorization Failed",
       message: "Permission denied, Unauthorized access",
